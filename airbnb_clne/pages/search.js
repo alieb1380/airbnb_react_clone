@@ -2,21 +2,21 @@ import Footer from '../components/Footer';
 import Header from './../components/Header';
 import { useRouter } from "next/dist/client/router";
 import { format } from 'date-fns';
+import InfoCard from '../components/InfoCard';
 
-function search({ searchResult }) {
+function search({ searchResults }) {
     const router = useRouter();
 
-    console.log(searchResult);
     // ES6 Destructor
     const { location, startDate, endDate, noOfGuests } = router.query;
 
-    const formattedStartDate = format(new Date(startDate), "MM dd yyyy");
-    const formattedEndDate = format(new Date(endDate), "MM dd yyyy");
+    const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
+    const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
     const range = `${formattedStartDate} - ${formattedEndDate}`;
 
     return (
         <div>
-            <Header placeholder={`${location} | ${range} ${noOfGuests} guests`}/>
+            <Header placeholder={`${location} | ${range} ${noOfGuests} guests`} />
 
             <main className="flex">
                 <section className="flex-grow pt-14 px-6">
@@ -30,6 +30,22 @@ function search({ searchResult }) {
                         <p className="button">Price</p>
                         <p className="button">Rooms and beds</p>
                         <p className="button">More Filters</p>
+                    </div>
+
+                    <div className="flex flex-col">
+                        {searchResults.map(
+                            ({ img, location, title, description, star, price, total }) => (
+                            <InfoCard
+                                key={img}
+                                img={img}
+                                location={location}
+                                title={title}
+                                description={description}
+                                star={star}
+                                price={price}
+                                total={total}
+                            />
+                        ))}
                     </div>
                 </section>
             </main>
